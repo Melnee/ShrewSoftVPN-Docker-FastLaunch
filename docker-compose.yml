@@ -1,11 +1,15 @@
 services:
   shrewsoft:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: shrewsoft-vpn
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
+      # - ./ike_github_repo/ike:/ike_install_files
     environment:
       - DISPLAY=${DISPLAY}
     stdin_open: true
     tty: true
+    command: /bin/bash
