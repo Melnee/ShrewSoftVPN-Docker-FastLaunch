@@ -1,0 +1,11 @@
+services:
+  shrewsoft:
+    build: .
+    container_name: shrewsoft-vpn
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/root/.Xauthority
+    environment:
+      - DISPLAY=${DISPLAY}
+    stdin_open: true
+    tty: true
