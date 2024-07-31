@@ -1,3 +1,3 @@
-/vpn_files/*
+/vpn_files/*.vpn
 
 .env
