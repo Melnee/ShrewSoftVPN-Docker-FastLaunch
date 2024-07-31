@@ -1,0 +1,20 @@
+services:
+  shrewsoft:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: shrewsoft-vpn
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/root/.Xauthority
+    environment:
+      - DISPLAY=${DISPLAY}
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN  # Allows network-related operations
+      - NET_RAW  # Allows raw socket operations
