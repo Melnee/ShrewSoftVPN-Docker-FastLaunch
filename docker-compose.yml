@@ -3,13 +3,14 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: vpn_container
-    image: vpn_image
+    container_name: shrew-vpn-container
+    image: vpn-image
     network_mode: "host"
     privileged: true
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
+      - ./ike_github_repo/ike:/shrewsoft_vpn_container
     environment:
       - DISPLAY=${DISPLAY}
     env_file:

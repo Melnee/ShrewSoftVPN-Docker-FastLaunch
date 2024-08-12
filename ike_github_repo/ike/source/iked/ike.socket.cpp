@@ -129,15 +129,6 @@ long _IKED::socket_create( IKE_SADDR & saddr, bool natt )
 			return LIBIKE_SOCKET;
 		}
 	}
-	else
-	{
-		optval = UDP_ENCAP_ESPINUDP_NON_IKE;
-		if( setsockopt( sock_info->sock, SOL_UDP, UDP_ENCAP, &optval, sizeof( optval ) ) < 0)
-		{
-			log.txt( LLOG_ERROR, "!! : socket set udp-encap non-ike option failed\n" );
-			return LIBIKE_SOCKET;
-		}
-	}
 
 #endif
 
