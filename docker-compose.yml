@@ -11,6 +11,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
       - ./ike_github_repo/ike:/shrewsoft_vpn_container
+      - ./vpn_files:/vpn_files
     environment:
       - DISPLAY=${DISPLAY}
     env_file:
