@@ -15,19 +15,19 @@ This repo will automatically create a docker image in Ubuntu 20.04, install the 
 3. xhost for X11 forwarding (this allows you to run programs in docker, and actually see the GUI!)
 Xhost instructions for max and linux: https://www.businessnewsdaily.com/11035-how-to-use-x11-forwarding.html
 Xhost instructions for windows: http://www.straightrunning.com/XmingNotes/
+4. xfreerdp recommended for your RDP client
 
 ## Instructions:
 1. Clone the repo
 2. Place your .vpn files into the /vpn_files directory in the root directory of this github repo.
 3. Inside the included .env.example file (also root directory of this repo) set the username equal to your desired username. Right now it's set to mine. `ENV USERNAME=melnee` (replace `melnee` with your desired username)
 4. (Erase the suffix "example" from it to make it actually work!)
-5. Run `xhost +` in a terminal to allow connections from all hosts (if you're in a debian distro! Mac or Windows may have different instructions for x11 forwarding, see above)
+5. If you're in Ubuntu, just run the x11_enable_forwarding.sh script in the root of this repo. If you're in Mac or Windows follow different instructions linked above.
 6. `sudo docker compose build` to build
 7. `sudo docker compose up` to spin up the container
-8. `sudo docker ps -a` to list containers. Copy the container id for the container titled something like "something-shrewsoft-vpn"
-9. `sudo docker exec -it <CONTAINERID> /bin/bash` to enter container bash
-10. `iked` to start the ike service
-11. `qikea` to run shrewsoft vpn GUI !
+8. `bash enter-container-bash.sh` to enter the container's bash.
+9. Inside the container, run `iked` to start the ike service
+10. `qikea` to run shrewsoft vpn GUI and a window should pop up !
 
 ## In the ShrewSoft interface, to import a vpn connection:
 1. File
