@@ -24,6 +24,7 @@ RUN apt-get update && \
     bison \
     vim \
     gedit \
+    iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY /vpn_files /vpn_files  
@@ -46,5 +47,4 @@ RUN sed -i 's_habusnina_${USERNAME}_gI' ./source/qikea/moc_qikea.cpp_parameters 
 ENV DISPLAY=:0
 ENV XAUTHORITY=/root/.Xauthority
 
-# Set up entry point (bash shell)
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

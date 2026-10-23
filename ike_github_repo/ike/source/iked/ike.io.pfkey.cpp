@@ -239,6 +239,17 @@ long _IKED::loop_ike_pfkey()
 				break;
 
 
+			case SADB_EXPIRE:
+
+				log.txt( LLOG_DEBUG,
+					"K< : recv pfkey %s %s message\n",
+					pfki.name( NAME_MSGTYPE, msg.header.sadb_msg_type ),
+					pfki.name( NAME_SATYPE, msg.header.sadb_msg_satype ) );
+
+				pfkey_recv_expire( msg );
+
+				break;
+
 			default:
 
 				log.txt( LLOG_ERROR,
@@ -879,6 +890,69 @@ long _IKED::pfkey_recv_acquire( PFKI_MSG & msg )
 				spinfo.sp.type,
 				spinfo.sp.id,
 				msg.header.sadb_msg_seq );
+}
+
+long _IKED::pfkey_recv_expire( PFKI_MSG & msg )
+{
+	PFKI_SA sa;
+	memset( &sa, 0, sizeof( sa ) );
+
+	if( pfki.read_sa( msg, sa ) != IPCERR_OK )
+	{
+		log.txt( LLOG_ERROR,
+			"K! : failed to read sa info for expire\n" );
+
+		return LIBIKE_FAILED;
+	}
+
+	log.txt( LLOG_INFO,
+		"ii : phase2 sa expired ( spi = 0x%08x )\n",
+		ntohl( sa.spi ) );
+
+	//
+	// locate the phase2 by the local spi
+	//
+
+	IKE_SPI spi_l;
+	memset( &spi_l, 0, sizeof( spi_l ) );
+	spi_l.spi  = sa.spi;
+	spi_l.size = 4;
+
+	IDB_PH2 * ph2;
+	if( !idb_list_ph2.find(
+			true,
+			&ph2,
+			NULL,
+			XCH_STATUS_ANY,
+			XCH_STATUS_ANY,
+			NULL,
+			NULL,
+			&spi_l,
+			NULL ) )
+	{
+		log.txt( LLOG_DEBUG,
+			"ii : unable to locate phase2 for expired spi 0x%08x\n",
+			ntohl( sa.spi ) );
+
+		return LIBIKE_OK;
+	}
+
+	//
+	// if this phase2 is nailed, renegotiate immediately
+	//
+
+	log.txt( LLOG_DEBUG,
+		"ii : renegotiating phase2 after expire\n" );
+
+	pfkey_init_phase2(
+		true,
+		IPSEC_POLICY_IPSEC,
+		ph2->plcyid_out,
+		0 );
+
+	ph2->dec( true );
+
+	return LIBIKE_OK;
 }
 
 long _IKED::pfkey_recv_getspi( PFKI_MSG & msg )
