@@ -762,6 +762,7 @@ typedef class _IKED
 	long	pfkey_recv_flush( PFKI_MSG & msg );
 	long	pfkey_recv_spdel( PFKI_MSG & msg );
 	long	pfkey_recv_spflush( PFKI_MSG & msg );
+	long	pfkey_recv_expire( PFKI_MSG & msg );
 
 	long	pfkey_send_getspi( IDB_POLICY * policy, IDB_PH2 * ph2 );
 	long	pfkey_send_update( IDB_PH2 * ph2, IKE_PROPOSAL * proposal, BDATA & ekey, BDATA & akey, long dir );

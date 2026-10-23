@@ -12,8 +12,12 @@ services:
       - ~/.Xauthority:/root/.Xauthority
       - ./ike_github_repo/ike:/shrewsoft_vpn_container
       - ./vpn_files:/vpn_files
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./write_vpn_config.sh:/usr/local/bin/write_vpn_config.sh
     environment:
       - DISPLAY=${DISPLAY}
+      - VPN_FILE_USERNAME=${VPN_FILE_USERNAME}
+      - VPN_FILE_PASSWORD=${VPN_FILE_PASSWORD}
     env_file:
       - .env
     stdin_open: true
